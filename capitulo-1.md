@@ -460,6 +460,55 @@ Ten en cuenta que la segunda opción de menú **App Store** muestra la lista de 
 
 ![Apps](file:img/1-07.jpg)
 
+### Creando un Servicio de Odoo
+
+Crear una undidad systemd llamada **odoo10-server** para permitir que su aplicación se comporte como un servicui.  Cree un archivo nuevo **/lib/systemd/system/odoo10-server.service** y agrege el siguiente contenido:
+
+/lib/systemd/system/odoo-server.service
+```
+[Unit]
+Description=Odoo 10 Open Source ERP and CRM
+Requires=postgresql.service
+After=network.target postgresql.service
+    
+[Service]
+Type=simple
+PermissionsStartOnly=true
+SyslogIdentifier=odoo-server
+User=odoo
+Group=odoo
+; el caracter: ~ = /home/odoo
+ExecStart=/home/odoo/odoo-dev/odoo/odoo-bin --config=/home/odoo/odoo-dev/odoo/debian/odoo-server.conf --db-filter=^NOMBRE_BASE_DE_DATOS*
+;--addons-path=/home/odoo-dev/addons/
+WorkingDirectory=/home/odoo/odoo-dev/
+StandardOutput=journal+console
+    
+[Install]
+WantedBy=multi-user.target
+```
+ 
+La línea más relevante en este archivo es **StandardOutput=journal+console**. Como se configuró en el ejemplo anterior, los registros de Odoo serán administrados por completo por el diario del sistema (Opción 2 en la sección Configurar registros ). Si desea un archivo de registro independiente, omita esa línea y configure en odoo-server.conf en consecuencia, especificando la ubicación de su archivo de registro. Recuerde que journald, siempre capturará la actividad principal del servicio Odoo (inicio, parada, reinicio, errores), utilizando un archivo de registro separado sólo excluirá los mensajes de "info" de diario como mensajes de servidor web, motor de renderizado, etc.
+
+### Cambio de Propiedades de archivo y permisos
+1. Change the odoo-server service permissions and ownership so only root can write to it, while the odoo user will only be able to read and execute it.
+```
+sudo chmod 755 /lib/systemd/system/odoo-server.service
+sudo chown root: /lib/systemd/system/odoo-server.service
+```
+2. Since the odoo user will run the application, change its ownership accordingly.
+```
+sudo chown -R odoo: /opt/odoo/
+```
+3. If you chose to use a custom log, set the odoo user as the owner of log directory as well (this applies only if you decided to use a separate log file):
+```
+sudo chown odoo:root /var/log/odoo
+```
+4. Finally, protect the server configuration file. Change its ownership and permissions so no other non-root user can access it:
+```
+sudo chown odoo: /etc/odoo-server.conf
+sudo chmod 640 /etc/odoo-server.conf
+```
+
 ## Resumen
 En este capítulo, aprendimos a configurar un sistema Debian para alojar Odoo e instalarlo desde el código fuente de GitHub. También aprendimos a crear bases de datos Odoo y ejecutar instancias de Odoo. Para permitir a los desarrolladores utilizar sus herramientas favoritas en su estación de trabajo personal, explicamos cómo configurar el uso compartido de archivos en el huesped Odoo.
 
