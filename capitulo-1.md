@@ -463,6 +463,12 @@ Ten en cuenta que la segunda opción de menú **App Store** muestra la lista de 
 ### Instalar versión estable de WkHtmlToPdf
 
 Esta herramienta convierte código **Html** a **PDf** y en Odoo es utilizada para de manera rápida convertir reportes Html (formularios) a archivos formato Pdf que se pueden adjuntar a e-mails o imprimir reportes que desde el administrador de impresión del navegador puedes ver o imprimir en impresora.
+1. Navegue al directorio temporal:
+`cd /tmp`
+2. Descargue la versión recomenad de wkhtmltopdf para el servidor Odoo.  En este ejemplo usaremos la **0.12.1**.  Vea el ![repositorio odoo](https://github.com/odoo/odoo/wiki/Wkhtmltopdf) para una lista compatible a la fecha de la versión.
+`sudo wget https://downloads.wkhtmltopdf.org/0.12/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb`
+3. Instale el paquete usando **dpkg**:
+`sudo dpkg -i wkhtmltox-0.12.1_linux-trusty-amd64.deb`
 
 ### Creando un Servicio de Odoo
 
