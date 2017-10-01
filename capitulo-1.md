@@ -460,6 +460,10 @@ Ten en cuenta que la segunda opción de menú **App Store** muestra la lista de 
 
 ![Apps](file:img/1-07.jpg)
 
+### Instalar versión estable de WkHtmlToPdf
+
+Esta herramienta convierte código **Html** a **PDf** y en Odoo es utilizada para de manera rápida convertir reportes Html (formularios) a archivos formato Pdf que se pueden adjuntar a e-mails o imprimir reportes que desde el administrador de impresión del navegador puedes ver o imprimir en impresora.
+
 ### Creando un Servicio de Odoo
 
 Crear una undidad systemd llamada **odoo10-server** para permitir que su aplicación se comporte como un servicui.  Cree un archivo nuevo **/lib/systemd/system/odoo10-server.service** y agrege el siguiente contenido:
